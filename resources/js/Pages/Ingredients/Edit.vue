@@ -13,11 +13,11 @@
         <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
           <text-input v-model="form.name" :error="errors.name" class="pr-6 pb-8 w-full lg:w-1/2" label="Nume" />
           <text-input v-model="form.um" :error="errors.um" class="pr-6 pb-8 w-full lg:w-1/2" label="Unitate Masura" />
-          <text-input v-model="form.cant" :error="errors.cant" class="pr-6 pb-8 w-full lg:w-1/2" label="Cantitate" />
-          <text-input v-model="form.cant_r" :error="errors.cant_r" class="pr-6 pb-8 w-full lg:w-1/2" label="Cantitate Ramasa" />
-          <text-input v-model="form.proteine" :error="errors.proteine" class="pr-6 pb-8 w-full lg:w-1/2" label="Proteine" />
-          <text-input v-model="form.lipide" :error="errors.lipide" class="pr-6 pb-8 w-full lg:w-1/2" label="Lipide" />
-          <text-input v-model="form.glucide" :error="errors.glucide" class="pr-6 pb-8 w-full lg:w-1/2" label="Glucide" />
+          <text-input v-model.number="form.cant" :error="errors.cant" class="pr-6 pb-8 w-full lg:w-1/2" label="Cantitate" />
+          <text-input v-model.number="form.cant_r" :error="errors.cant_r" class="pr-6 pb-8 w-full lg:w-1/2" label="Cantitate Ramasa" />
+          <text-input v-model.number="form.proteine" :error="errors.proteine" class="pr-6 pb-8 w-full lg:w-1/2" label="Proteine" />
+          <text-input v-model.number="form.lipide" :error="errors.lipide" class="pr-6 pb-8 w-full lg:w-1/2" label="Lipide" />
+          <text-input v-model.number="form.glucide" :error="errors.glucide" class="pr-6 pb-8 w-full lg:w-1/2" label="Glucide" />
           <text-input v-model="calorii" readonly="true" class="pr-6 pb-8 w-full lg:w-1/2" label="Calorii" />
         </div>
         <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
@@ -71,7 +71,7 @@ export default {
   },
   computed:{
     calorii:function (){
-      return parseInt(this.form.glucide)*4 + parseInt(this.form.lipide)*9 + parseInt(this.form.proteine)*4
+      return (parseFloat(this.form.glucide)*4.1 + parseFloat(this.form.lipide)*9.1 + parseFloat(this.form.proteine)*4.1).toFixed(2)
     }
   },
   methods: {

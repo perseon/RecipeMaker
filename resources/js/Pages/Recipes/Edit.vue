@@ -16,7 +16,7 @@
           />
           <table class="w-full whitespace-no-wrap">
             <tr class="text-center">
-              <th class="px-6 pt-6 pb-4">name</th>
+              <th class="px-6 pt-6 pb-4">Denumire</th>
               <th class="px-6 pt-6 pb-4">Cant</th>
               <th class="px-6 pt-6 pb-4">C Ramas</th>
               <th class="px-6 pt-6 pb-4">Proteine</th>
@@ -34,32 +34,32 @@
               </td>
               <td class="border-t">
                         <span class="px-6 py-4 flex items-center" tabindex="-1">
-                            {{ ingredient.cant }}{{ ingredient.um }}
+                            <input style="width:5em"  type="number" ref="input" class="form-input"  v-model="ingredient.cant"> {{ ingredient.um }}
                         </span>
               </td>
               <td class="border-t">
                         <span class="px-6 py-4 flex items-center" tabindex="-1">
-                            {{ ingredient.cant_r }}{{ ingredient.um }}
+                            {{ (ingredient.cant_r * ingredient.cant / ingredient.orig).toFixed(2) }}
                         </span>
               </td>
               <td class="border-t">
                         <span class="px-6 py-4 flex items-center" tabindex="-1">
-                            {{ ingredient.proteine }}
+                            {{ (ingredient.proteine * ingredient.cant / ingredient.orig).toFixed(2)  }}
                         </span>
               </td>
               <td class="border-t">
                         <span class="px-6 py-4 flex items-center" tabindex="-1">
-                            {{ ingredient.lipide }}
+                            {{ (ingredient.lipide * ingredient.cant / ingredient.orig).toFixed(2) }}
                         </span>
               </td>
               <td class="border-t">
                         <span class="px-6 py-4 flex items-center" tabindex="-1">
-                            {{ ingredient.glucide }}
+                            {{ (ingredient.glucide * ingredient.cant / ingredient.orig).toFixed(2)}}
                         </span>
               </td>
               <td class="border-t">
                         <span class="px-6 py-4 flex items-center" tabindex="-1">
-                            {{ ingredient.glucide * 4 + ingredient.proteine * 4 + ingredient.lipide * 9 }}
+                            {{ ((ingredient.glucide * 4.1 + ingredient.proteine * 4.1 + ingredient.lipide * 9.1)* ingredient.cant / ingredient.orig ).toFixed(2)}}
                         </span>
               </td>
               <td class="border-t w-px">
@@ -252,8 +252,8 @@ export default {
   },
   methods: {
     submit() {
-      ['um','cant','cant_r','proteine','lipide','glucide','calorii'].forEach((item)=>this.form[item] = this.getTotal(item))
-      this.form.ingredients = this.recipe.ingredients.map(i => i.id);
+      ['um','cant','cant_r','proteine','lipide','glucide','calorii'].forEach((item)=>this.form[item] = item=='um'?'':this.getTotal(item))
+      this.form.ingredients = this.recipe.ingredients.map(i => [i.id,i.cant]);
       this.$inertia.put(this.route('recipes.update', this.recipe.id), this.form, {
         onStart: () => this.sending = true,
         onFinish: () => this.sending = false,
@@ -276,6 +276,8 @@ export default {
         .then(response => (this.XHRingredients = response))
     },
     selectIngredient(ingredient) {
+      //copiem ca sa avem o referinta asupra cantitatii
+      ingredient.orig = ingredient.cant
       this.recipe.ingredients.push(ingredient)
       this.sideOver = false
     },
@@ -284,9 +286,9 @@ export default {
       this.recipe.ingredients.splice(index, 1)
     },
     getTotal(field){
-      const reducer = (accumulator, currentValue) => accumulator + currentValue;
-      const values = this.recipe.ingredients.map(a => a[field]);
-      return values.reduce(reducer)
+      const reducer = (accumulator, currentValue) => isNaN(currentValue)?currentValue: accumulator + currentValue;
+      const values = this.recipe.ingredients.map(a => field==='cant'?parseInt(a[field]):a[field] * a['cant'] / a['orig']);
+      return values.reduce(reducer).toFixed(2)
     }
   },
   mounted() {

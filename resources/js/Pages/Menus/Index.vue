@@ -12,7 +12,7 @@
       </search-filter>
       <inertia-link class="btn-indigo" :href="route('menus.create')">
         <span>Creeaza</span>
-        <span class="hidden md:inline">Menu</span>
+        <span class="hidden md:inline">Meniu</span>
       </inertia-link>
     </div>
     <div class="bg-white rounded shadow overflow-x-auto">
@@ -52,7 +52,7 @@ import SearchFilter from '@/Shared/SearchFilter'
 import throttle from 'lodash/throttle'
 
 export default {
-  metaInfo: { title: 'Organizations' },
+  metaInfo: { title: 'Meniuri' },
   layout: Layout,
   components: {
     Icon,

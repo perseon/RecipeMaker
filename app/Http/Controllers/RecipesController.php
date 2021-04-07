@@ -32,6 +32,12 @@ class RecipesController extends Controller
         Auth::user()->account->recipes()->create(
             Request::validate([
                 'name' => ['required', 'max:100'],
+                'um' => ['nullable', 'max:5'],
+                'cant' => ['nullable', 'numeric'],
+                'cant_r' => ['nullable', 'numeric'],
+                'proteine' => ['nullable', 'numeric'],
+                'lipide' => ['nullable', 'numeric'],
+                'glucide' => ['nullable', 'numeric'],
 
             ])
         );
@@ -41,6 +47,18 @@ class RecipesController extends Controller
 
     public function edit(Recipe $recipe)
     {
+        $ingredients = [];
+
+        foreach ($recipe->ingredients as $ingredient) {
+
+            $ingredient->orig = $ingredient->cant;
+
+            $ingredient->cant = $ingredient->pivot->cant;
+
+            $ingredients[] = $ingredient;
+        }
+        //dd($ingredients);
+
         return Inertia::render('Recipes/Edit', [
             'recipe' => [
                 'id' => $recipe->id,
@@ -53,7 +71,7 @@ class RecipesController extends Controller
                 'lipide' => $recipe->lipide,
                 'glucide' => $recipe->glucide,
                 'deleted_at' => $recipe->deleted_at,
-                'ingredients' => $recipe->ingredients()->orderByName()->get(),
+                'ingredients' => $ingredients,
             ],
         ]);
     }
@@ -74,7 +92,21 @@ class RecipesController extends Controller
         );
 
         $request = Request::all();
-        $recipe->ingredients()->sync(array_values($request['ingredients']));
+        //->attach([$request['id'] => ['price' => $request['price']]]);
+
+        $ingredients = array_values($request['ingredients']);
+
+        //dd($request);
+
+        $ingredients_array = [];
+
+        foreach ($ingredients as $ingredient){
+            //dd($ingredient);
+            $ingredients_array[$ingredient[0]] = ['cant' => $ingredient[1]];
+        }
+
+        //$recipe->ingredients()->sync(array_values($request['ingredients']));
+        $recipe->ingredients()->sync($ingredients_array);
 
 
         return Redirect::back()->with('success', 'Recipe updated.');

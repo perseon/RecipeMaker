@@ -167,6 +167,14 @@ Route::put('ingredients/{ingredient}/restore', [IngredientsController::class, 'r
     ->name('ingredients.restore')
     ->middleware('auth');
 
+Route::get('/exportIngredients',['App\Http\Controllers\IngredientsController','export'])
+    ->name('exportIngredients')
+    ->middleware('auth');
+
+Route::post('/importIngredients',['App\Http\Controllers\IngredientsController','import'])
+    ->name('importIngredients')
+    ->middleware('auth');
+
 
 // Organizations
 
@@ -228,8 +236,14 @@ Route::put('contacts/{contact}/restore', [ContactsController::class, 'restore'])
     ->name('contacts.restore')
     ->middleware('auth');
 
-Route::get('import', [ImportsController::class, 'index'])
-    ->name('imports')
+//Route::get('import', [ImportsController::class, 'index'])
+//    ->name('imports')
+//    ->middleware('auth');
+
+
+Route::get('import', function () {
+    return view('import');
+})->name('imports')
     ->middleware('auth');
 
 Route::post('import',[IngredientsController::class,'import'])->name('import')->middleware('auth');

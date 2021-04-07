@@ -8,6 +8,8 @@ class Menu extends Model
 {
     use SoftDeletes;
 
+    protected $guarded = [];
+
     public function account()
     {
         return $this->belongsTo(Account::class);
@@ -15,7 +17,7 @@ class Menu extends Model
 
     public function recipes()
     {
-        return $this->hasMany(Recipe::class);
+        return $this->belongsToMany(Recipe::class)->withPivot('cant');
     }
     public function scopeFilter($query, array $filters)
     {

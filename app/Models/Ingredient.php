@@ -9,11 +9,11 @@ class Ingredient extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = array('name', 'um', 'cant', 'cant_r', 'proteine', 'lipide', 'glucide', 'calorii');
+    protected $guarded = [] ;
 
     public function recipes()
     {
-        return $this->belongsToMany(Recipe::class);
+        return $this->belongsToMany(Recipe::class)->withPivot('cant');
     }
 
     public function account()

@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
+use App\Imports\IngredientsImport;
+use App\Exports\IngredientsExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class IngredientsController extends Controller
 {
@@ -93,5 +96,22 @@ class IngredientsController extends Controller
         $ingredient->restore();
 
         return Redirect::back()->with('success', 'Ingredient restored.');
+    }
+
+    public function export()
+    {
+        return Excel::download(new IngredientsExport(), 'ingrediente.xlsx');
+    }
+
+    public function import()
+    {
+
+        \DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        \DB::table('ingredients')->truncate();
+        \DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        Excel::import(new IngredientsImport(),request()->file('file'));
+
+        return Redirect::route('ingredients')->with('success', 'Import realizat.');
+
     }
 }

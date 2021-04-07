@@ -25,10 +25,10 @@
       </inertia-link>
     </div>
     <div class="mb-4">
-      <inertia-link class="flex items-center group py-3" :href="route('import')">
+      <a class="flex items-center group py-3" :href="route('import')">
         <icon name="printer" class="w-4 h-4 mr-2" :class="isUrl('import') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
         <div :class="isUrl('ingredients') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">Import</div>
-      </inertia-link>
+      </a>
     </div>
 <!--    <div class="mb-4">-->
 <!--      <inertia-link class="flex items-center group py-3" :href="route('organizations')">-->
