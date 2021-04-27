@@ -34,7 +34,7 @@
               </td>
               <td class="border-t">
                         <span class="px-6 py-4 flex items-center" tabindex="-1">
-                            <input style="width:5em"  type="number" ref="input" class="form-input"  v-model="recipe.cant"> {{ recipe.um }}
+                            <input style="width:5em"  type="number" step="0.5" ref="input" class="form-input"  v-model="recipe.cant"> {{ recipe.um }}
                         </span>
               </td>
               <td class="border-t">
@@ -59,7 +59,7 @@
               </td>
               <td class="border-t">
                         <span class="px-6 py-4 flex items-center" tabindex="-1">
-                            {{ ((recipe.glucide * 4.1 + recipe.proteine * 4.1 + recipe.lipide * 9.1)* recipe.cant / recipe.orig ).toFixed(2)}}
+                            {{ ((recipe.glucide * 4.1 + recipe.proteine * 4.1 + recipe.lipide * 9.3)* recipe.cant / recipe.orig ).toFixed(2)}}
                         </span>
               </td>
               <td class="border-t w-px">

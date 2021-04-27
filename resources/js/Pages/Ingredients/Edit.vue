@@ -71,7 +71,7 @@ export default {
   },
   computed:{
     calorii:function (){
-      return (parseFloat(this.form.glucide)*4.1 + parseFloat(this.form.lipide)*9.1 + parseFloat(this.form.proteine)*4.1).toFixed(2)
+      return (parseFloat(this.form.glucide)*4.1 + parseFloat(this.form.lipide)*9.3 + parseFloat(this.form.proteine)*4.1).toFixed(2)
     }
   },
   methods: {
